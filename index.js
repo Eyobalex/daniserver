@@ -8,6 +8,7 @@ import postRoutes from './routes/listings.js';
 import userRouter from "./routes/user.js";
 import  commentRouter  from './routes/commentRouter.js';
 import  ratingRouter  from './routes/ratingRouter.js';
+import  adminRouter  from './routes/admin.js';
 import jwt from "jsonwebtoken";
 const secret=process.env.SECRET;
 import nodemailer from 'nodemailer';
@@ -37,6 +38,7 @@ app.use('/comment',commentRouter);
 app.use('/posts', postRoutes);
 app.use("/user", userRouter);
 app.use('/rating',ratingRouter);
+app.use('/admin',adminRouter);
 
 const CONNECTION_URL ='mongodb+srv://businessDir:businessDir123@cluster0.bqxqx.mongodb.net/BusinessDirectoryDatabase?retryWrites=true&w=majority'
 
