@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import User from "../models/user.js";
 const secret=process.env.SECRET
 
 const auth = async (req, res, next) => {
@@ -10,11 +11,12 @@ const auth = async (req, res, next) => {
 
     if (token && isCustomAuth) {      
       decodedData = jwt.verify(token, secret);
-      console.log(decodedData);
+      // console.log(decodedData);
+      const user = await User.findById({_id: decodedData.id});
       req.userId = decodedData.id;
+      req.userRole = user.role;
     } else {
       decodedData = jwt.decode(token);
-
       req.userId = decodedData.sub;
     }    
 
