@@ -1,5 +1,5 @@
 import User from '../../models/user.js';
-
+import mongoose from 'mongoose';
 
 
 export const getUsers = async (req, res, next) => {
@@ -15,7 +15,7 @@ export const getUsers = async (req, res, next) => {
 export const deleteUsers = async (req,res) => {
     try {
         const {id} = req.params;
-        if(! mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({message: "user id is not valid"});
+        if(! mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: "user id is not valid"});
         await User.findByIdAndRemove({_id: id});
         res.status(204).json({message: "user has been deleted"}); 
     } catch (error) {

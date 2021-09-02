@@ -13,9 +13,12 @@ export const getCategories= async (req, res) => {
 
 export const createCategories = async (req, res) => {
     try {
-        if(!req.userId) res.status(403).json({message: "you need to login"});
+        if(!req.userId){
+            res.status(403).json({message: "you need to login"});
+            return;
+        } 
         const {category, faicon} = req.body;
-        const newCategory = await Category.Create({category, fa_icon: faicon});
+        const newCategory = await Category.create({name: category, fa_icon: faicon});
 
         res.status(201).json(newCategory)
         

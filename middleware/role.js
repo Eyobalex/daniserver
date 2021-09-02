@@ -1,6 +1,6 @@
 
 
-const role = async (req, res, next) => {
+export const admin = async (req, res, next) => {
   try {
     if (req.userRole !== "ADMIN") {
         res.status(403).json({message: "you need to login as an admin"});
@@ -12,4 +12,3 @@ const role = async (req, res, next) => {
   }
 };
 
-export default role;
