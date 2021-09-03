@@ -22,3 +22,17 @@ export const deleteUsers = async (req,res) => {
         console.error(error);
     }
 }
+
+
+export const editUsers = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const {name, email, role, verified} = req.body;
+        if(! mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: "user id is not valid"});
+
+        const oldUser = await User.findByIdAndUpdate({_id: id}, {name: name, email: email, role: role, verified: verified}, {new: true});
+        res.status(202).json(oldUser)
+    } catch (error) {
+        console.error(error );
+    }
+}
