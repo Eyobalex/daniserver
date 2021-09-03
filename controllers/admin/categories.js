@@ -1,5 +1,5 @@
 import Category from "../../models/category.js"
-
+import mongoose from 'mongoose';
 
 export const getCategories= async (req, res) => {
     try {
@@ -30,7 +30,7 @@ export const createCategories = async (req, res) => {
 export const deleteCategories= async (req, res) => {
     try {
         const {id} = req.params;
-        if(! mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({message: "category id is not valid"});
+        if(! mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: "category id is not valid"});
         await Category.findByIdAndRemove({_id: id});
         res.status(204).json({message: "category has been deleted"}) 
     } catch (error) {
