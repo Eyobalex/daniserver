@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import Listing from '../models/uploadListing.js';
+import Image from '../models/image.js'
+import User from '../models/user.js';
 
 const router = express.Router();
 
@@ -57,6 +59,7 @@ export const createPost = async (req, res) => {
     const post = req.body;
 
 
+    // console.log(post.productImages);
     const newListing = new Listing({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
 
     try {
@@ -122,7 +125,7 @@ export const rateAListing = async (req, res) => {
         const {id: _id } = req.params;
         const { rating } = req.body;
 
-        if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send(`No post with id: ${id}`);
+        if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json(`No post with id: ${_id}`);
 
         const listing = await Listing.findById(_id);
 
@@ -144,5 +147,46 @@ export const rateAListing = async (req, res) => {
 }
 
 
+export const getOwnPosts = async (req, res) => {
+    try {
+        
+        const {id: ownerId} = req.params;
+        const posts = await Listing.find({creator: ownerId});
+        res.status(200).json(posts);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const uploadProductImage = async (req, res) => {
+    try {
+        const {id} = req.params;
+        if (req.file) {
+            const productImage = req.file;
+            const img = new Image();
+            img.originalName = productImage.originalName
+            img.mimeType = productImage.mimeType
+            img.filename = productImage.filename
+            img.path = productImage.path
+            img.size = productImage.size
+            img.imgFor = 'product image'
+            img.save();
+
+            const listing = await Listing.findById({_id: id});
+            listing.productImages.push(img._id);
+            listing.save();
+
+            res.status(201).json(listing)
+
+        }else{
+            res.status(404).json({message: 'there is no image file available in the request'});
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
 
 export default router;
+
