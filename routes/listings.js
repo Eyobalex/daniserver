@@ -19,7 +19,7 @@ const router = express.Router();
 
 router.get("/search", getPostsBySearch);
 router.get("/", getPosts);
-router.get("/m/:id", getOwnPosts);
+router.get("/own",auth, getOwnPosts);
 router.patch("/productImage/:id", imageUpload.single('productImage'), uploadProductImage);
 router.get("/:id", getPost);
 

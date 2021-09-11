@@ -149,9 +149,11 @@ export const rateAListing = async (req, res) => {
 
 export const getOwnPosts = async (req, res) => {
     try {
-        
-        const {id: ownerId} = req.params;
-        const posts = await Listing.find({creator: ownerId});
+        if (!req.userId){
+            res.status(403).json({message: 'you need to login'});
+            return;
+        } 
+        const posts = await Listing.find({creator: req.userId}).populate('productImages');
         res.status(200).json(posts);
     } catch (error) {
         console.log(error);
