@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import Listing from '../models/uploadListing.js';
 import Image from '../models/image.js'
 import User from '../models/user.js';
+import { uploadImage } from '../helpers/imageUpload.js';
 
 const router = express.Router();
 
@@ -165,14 +166,7 @@ export const uploadProductImage = async (req, res) => {
         const {id} = req.params;
         if (req.file) {
             const productImage = req.file;
-            const img = new Image();
-            img.originalName = productImage.originalName
-            img.mimeType = productImage.mimeType
-            img.filename = productImage.filename
-            img.path = productImage.path
-            img.size = productImage.size
-            img.imgFor = 'product image'
-            img.save();
+            const img = uploadImage(productImage);
 
             const listing = await Listing.findById({_id: id});
             listing.productImages.push(img._id);
@@ -190,5 +184,24 @@ export const uploadProductImage = async (req, res) => {
 
 
 
-export default router;
+export const removeProductImage = async (req, res) => {
+    try {
+
+
+        const {productId} = req.params
+        const { listingId} = req.body;
+
+
+        const listing = await Listing.findById({_id: listingId});
+
+        listing.productImages.filter(product => product._id !== productId);
+        listing.save();
+        await Image.findByIdAndRemove({_id: productId});
+
+        res.status(200).json(listing);
+
+    } catch (error) {
+        console.log(error);
+    }
+};
 
