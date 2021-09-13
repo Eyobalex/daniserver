@@ -166,11 +166,16 @@ export const uploadProductImage = async (req, res) => {
         const {id} = req.params;
         if (req.file) {
             const productImage = req.file;
-            const img = uploadImage(productImage);
+            const img =await uploadImage(productImage);
+
+            console.log(img);
 
             const listing = await Listing.findById({_id: id});
+
             listing.productImages.push(img._id);
             listing.save();
+
+            console.log(listing);
 
             res.status(201).json(listing)
 
