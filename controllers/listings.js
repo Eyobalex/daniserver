@@ -168,16 +168,12 @@ export const uploadProductImage = async (req, res) => {
             const productImage = req.file;
             const img =await uploadImage(productImage);
 
-            console.log(img);
-
             const listing = await Listing.findById({_id: id});
 
             listing.productImages.push(img._id);
             listing.save();
-
-            console.log(listing);
-
-            res.status(201).json(listing)
+            const ls = await Listing.findById({_id : id}).populate('productImages');
+            res.status(201).json(ls)
 
         }else{
             res.status(404).json({message: 'there is no image file available in the request'});
