@@ -11,9 +11,11 @@ import {
   likePost,
   deletePost,
   rateAListing,
+  removeProductImage,
 } from "../controllers/listings.js";
 
 import auth from "../middleware/auth.js";
+import { business, client } from "../middleware/role.js";
 import imageUpload from "../middleware/upload.js";
 const router = express.Router();
 
@@ -21,12 +23,13 @@ router.get("/search", getPostsBySearch);
 router.get("/", getPosts);
 router.get("/own",auth, getOwnPosts);
 router.patch("/productImage/:id", imageUpload.single('productImage'), uploadProductImage);
+router.delete('/productImage/:productId', removeProductImage);
 router.get("/:id", getPost);
 
-router.post("/", auth, createPost);
-router.patch("/:id", auth, updatePost);
-router.delete("/:id", auth, deletePost);
-router.patch("/:id/likePost", auth, likePost);
+router.post("/", auth, business, createPost);
+router.patch("/:id", auth, business,  updatePost);
+router.delete("/:id", auth, business, deletePost);
+router.patch("/:id/likePost", auth, client,  likePost);
 
 router.patch("/rate/:id", rateAListing);
 

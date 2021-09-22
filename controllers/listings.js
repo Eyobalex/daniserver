@@ -187,15 +187,11 @@ export const uploadProductImage = async (req, res) => {
 
 export const removeProductImage = async (req, res) => {
     try {
-
-
         const {productId} = req.params
         const { listingId} = req.body;
-
-
         const listing = await Listing.findById({_id: listingId});
 
-        listing.productImages.filter(product => product._id !== productId);
+        listing.productImages.filter(product => product !== productId);
         listing.save();
         await Image.findByIdAndRemove({_id: productId});
 
