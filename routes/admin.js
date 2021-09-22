@@ -6,13 +6,15 @@ import auth from '../middleware/auth.js'
 import {admin} from '../middleware/role.js'
 const router = express.Router();
 
-router.get('/users',  getUsers);
+
+router.get('/users',auth, admin,  getUsers);
 router.get('/category', getCategories);
 router.post('/category',createCategories);
 router.get('/posts', getListings);
-router.patch(`/users/:id`,  editUsers);
-router.patch('/category/:id',editCategories);
+router.patch(`/users/:id`,auth, admin,  editUsers);
+router.patch('/category/:id',auth, admin,editCategories);
 
-router.delete('/category/:id',deleteCategories);
-router.delete('/users/:id', deleteUsers);
+router.delete('/category/:id', auth, admin, deleteCategories);
+router.delete('/users/:id',auth, admin, deleteUsers);
+
 export default router;

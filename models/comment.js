@@ -22,9 +22,7 @@ const commentSchema = mongoose.Schema({
     createdAt: {
         type: String,
         default: new Date()
-    },
-    replies: [{type: mongoose.Schema.Types.ObjectID, ref: 'Reply'},
-]
+    }
 });
 var Comment = mongoose.model('Comment', commentSchema);
 export default Comment;
