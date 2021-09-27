@@ -25,7 +25,13 @@ export const client = async (req, res, next) => {
 export const business = async (req, res, next) => {
   try {
     if (req.userRole !== "BUSINESS") {
-        res.status(403).json({message: "you need to login as an business"});
+
+      if (req.userRole == "ADMIN") {
+        next();
+        return;
+      }
+      console.log(req.userRole);
+        res.status(403).json({message: "you need to login as an businesss"});
         return;
     }
     next();
