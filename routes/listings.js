@@ -10,6 +10,7 @@ import {
   updatePost,
   likePost,
   deletePost,
+  postsByCategory,
   rateAListing,
   removeProductImage,
 } from "../controllers/listings.js";
@@ -22,6 +23,7 @@ const router = express.Router();
 router.get("/search", getPostsBySearch);
 router.get("/", getPosts);
 router.get("/own",auth, getOwnPosts);
+router.get("/category", postsByCategory);
 router.patch("/productImage/:id", imageUpload.single('productImage'), uploadProductImage);
 router.delete('/productImage/:productId', removeProductImage);
 router.get("/:id", getPost);

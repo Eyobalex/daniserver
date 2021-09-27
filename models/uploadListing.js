@@ -16,6 +16,7 @@ const postSchema = mongoose.Schema({
     totalRating: {type: Number, default: 0},
     ratingCount: {type: Number, default: 0},
     averageRating: {type: Number, default: 0},
+    views: {type:Number, default: 0},
     comments: [{ type:  mongoose.Types.ObjectId, ref: 'Comment'} ],
     likes: { type: [String], default: [] },
     createdAt: {

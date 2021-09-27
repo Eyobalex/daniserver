@@ -49,6 +49,9 @@ export const getPost = async (req, res) => {
 
     try {
         const post = await Listing.findById(id).populate('comments');
+
+        post.views = post.views + 1;
+        post.save();
         
         res.status(200).json(post);
     } catch (error) {
@@ -202,3 +205,15 @@ export const removeProductImage = async (req, res) => {
     }
 };
 
+
+
+export const postsByCategory= async (req, res, next) =>{
+    try {
+        const {catid} = req.query;
+        const listing = await Listing.find({category: catid});
+        console.log("here");
+        res.status(200).json(listing);
+    } catch (error) {
+        console.log(error);
+    }
+}
